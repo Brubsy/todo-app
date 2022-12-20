@@ -406,7 +406,6 @@ public class MainScreen extends javax.swing.JFrame {
                 xCoordinate = evt.getPoint().x;
                 yCoordinate = evt.getPoint().y;
                 checkCell(rowIndex, xCoordinate, yCoordinate);
-                JOptionPane.showMessageDialog(rootPane, evt.getPoint());
                 break;
         }      
     }//GEN-LAST:event_jTableTasksMouseClicked
@@ -559,11 +558,11 @@ public class MainScreen extends javax.swing.JFrame {
     }
     
     public void checkCell(int rowIndex, int xCoordinate, int yCoordinate){
-        
+        int rowHeight = 50;
         int rowClicked = rowIndex;
         
         if ((xCoordinate > 550) && (xCoordinate < 580)) {
-            if ((yCoordinate > (10 + rowClicked * 50)) && (yCoordinate < (40 + rowClicked * 50))) {
+            if ((yCoordinate > (10 + rowClicked * rowHeight)) && (yCoordinate < (40 + rowClicked * rowHeight))) {
                 buttonClicked(rowClicked);                
             }
         }
