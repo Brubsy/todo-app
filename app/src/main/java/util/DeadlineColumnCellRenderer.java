@@ -6,6 +6,7 @@ package util;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -30,11 +31,20 @@ public class DeadlineColumnCellRenderer extends DefaultTableCellRenderer {
         TaskTableModel taskModel = (TaskTableModel) table.getModel();
         Task task = taskModel.getTasks().get(row);
         
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String today = dateFormat.format(new Date());
+        
+        
         if (task.getDeadline().after(new Date())) {
-            label.setBackground(Color.GREEN);
+            label.setBackground(new Color(153,255,153));
             
         } else {
-            label.setBackground(Color.RED);
+            if (dateFormat.format(task.getDeadline()).equals(today)){
+              label.setBackground(new Color(255,153,51));
+                
+            } else {
+                label.setBackground(new Color(255,51,51));
+            }
         }
         
         return label;
