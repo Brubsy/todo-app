@@ -405,7 +405,8 @@ public class MainScreen extends javax.swing.JFrame {
             case 5:
                 xCoordinate = evt.getPoint().x;
                 yCoordinate = evt.getPoint().y;
-                checkRect(rowIndex, xCoordinate, yCoordinate);
+                checkCell(rowIndex, xCoordinate, yCoordinate);
+                JOptionPane.showMessageDialog(rootPane, evt.getPoint());
                 break;
         }      
     }//GEN-LAST:event_jTableTasksMouseClicked
@@ -557,15 +558,14 @@ public class MainScreen extends javax.swing.JFrame {
         jListProjects.setModel(projectsModel);
     }
     
-    public void checkRect(int rowIndex, int xCoordinate, int yCoordinate){
+    public void checkCell(int rowIndex, int xCoordinate, int yCoordinate){
         
         int rowClicked = rowIndex;
         
         if ((xCoordinate > 550) && (xCoordinate < 580)) {
-            if ((yCoordinate > 10) && (yCoordinate < 40)) {
+            if ((yCoordinate > (10 + rowClicked * 50)) && (yCoordinate < (40 + rowClicked * 50))) {
                 buttonClicked(rowClicked);                
             }
-        
         }
     }
     
@@ -579,7 +579,5 @@ public class MainScreen extends javax.swing.JFrame {
         int projectIndex = jListProjects.getSelectedIndex();
         Project project = (Project) projectsModel.get(projectIndex);
         loadTasks(project.getId());
-                    
-        JOptionPane.showMessageDialog(rootPane, "Botão clicado!");
     }
 }
