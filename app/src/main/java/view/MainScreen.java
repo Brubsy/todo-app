@@ -8,11 +8,15 @@ import controller.ProjectController;
 import controller.TaskController;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.Set;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import model.Project;
 import model.Task;
@@ -332,6 +336,19 @@ public class MainScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void labelMouseClicked(java.awt.event.MouseEvent evt){
+        int rowIndex = jTableTasks.rowAtPoint(evt.getPoint());
+        
+        Task task = taskModel.getTasks().get(rowIndex);
+        
+        taskController.removeById(task.getId());
+        taskModel.getTasks().remove(task);
+                
+        int projectIndex = jListProjects.getSelectedIndex();
+        Project project = (Project) projectsModel.get(projectIndex);
+        loadTasks(project.getId());
+    }    
+    
     private void jLabelProjectsAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelProjectsAddMouseClicked
         // TODO add your handling code here:
         ProjectDialogScreen projectDialogScreen = new ProjectDialogScreen(this, rootPaneCheckingEnabled);
@@ -367,7 +384,15 @@ public class MainScreen extends javax.swing.JFrame {
         
         int rowIndex = jTableTasks.rowAtPoint(evt.getPoint());
         int columnIndex = jTableTasks.columnAtPoint(evt.getPoint());
+        int xCoordinate;
+        int yCoordinate;
+        
+        
         Task task = taskModel.getTasks().get(rowIndex);
+        
+        /***if (columnIndex == 3) {
+            taskController.update(task);
+        }***/
         
         switch(columnIndex){
             case 3:
@@ -378,15 +403,11 @@ public class MainScreen extends javax.swing.JFrame {
                 break;
             
             case 5:
-                taskController.removeById(task.getId());
-                taskModel.getTasks().remove(task);
-                
-                int projectIndex = jListProjects.getSelectedIndex();
-                Project project = (Project) projectsModel.get(projectIndex);
-                loadTasks(project.getId());
-                               
+                xCoordinate = evt.getPoint().x;
+                yCoordinate = evt.getPoint().y;
+                checkRect(rowIndex, xCoordinate, yCoordinate);
                 break;
-        }       
+        }      
     }//GEN-LAST:event_jTableTasksMouseClicked
 
     private void jListProjectsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListProjectsMouseClicked
@@ -534,5 +555,31 @@ public class MainScreen extends javax.swing.JFrame {
         }
         
         jListProjects.setModel(projectsModel);
+    }
+    
+    public void checkRect(int rowIndex, int xCoordinate, int yCoordinate){
+        
+        int rowClicked = rowIndex;
+        
+        if ((xCoordinate > 550) && (xCoordinate < 580)) {
+            if ((yCoordinate > 10) && (yCoordinate < 40)) {
+                buttonClicked(rowClicked);                
+            }
+        
+        }
+    }
+    
+    public void buttonClicked(int rowClicked){
+                
+        Task task = taskModel.getTasks().get(rowClicked);
+        
+        taskController.removeById(task.getId());
+        taskModel.getTasks().remove(task);
+                
+        int projectIndex = jListProjects.getSelectedIndex();
+        Project project = (Project) projectsModel.get(projectIndex);
+        loadTasks(project.getId());
+                    
+        JOptionPane.showMessageDialog(rootPane, "Botão clicado!");
     }
 }
